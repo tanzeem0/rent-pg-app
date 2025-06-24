@@ -1,4 +1,4 @@
-package com.rentpgapp.rent_pg_service.commons;
+package com.rentpgapp.rent_pg_service.common;
 
 public enum BookingStatus {
     BOOKED,

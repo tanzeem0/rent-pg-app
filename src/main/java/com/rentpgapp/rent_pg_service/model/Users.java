@@ -1,4 +1,41 @@
 package com.rentpgapp.rent_pg_service.model;
 
+import com.rentpgapp.rent_pg_service.common.Roles;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class Users {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long user_id;
+
+    @Column(name = "name",nullable = false)
+    private String name;
+
+    @Column(name = "email",nullable = false)
+    private String email;
+
+    @Column(name ="phone_number",nullable = false)
+    private Integer phoneNumber;
+
+    @Column(name = "password",nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "roles")
+    private Roles roles;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
 }
