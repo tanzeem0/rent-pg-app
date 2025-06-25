@@ -23,10 +23,10 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private Users user;
-//
-//        @ManyToOne
-//        @JoinColumn(name = "room_id", referencedColumnName = "room_id")
-//        private Rooms room;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id", referencedColumnName = "room_id")
+    private Rooms room;
 
     @Column(name = "booking_date", nullable = false)
     private LocalDateTime bookingDate;
