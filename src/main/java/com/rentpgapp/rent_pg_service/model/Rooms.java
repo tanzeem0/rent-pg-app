@@ -19,9 +19,9 @@ public class Rooms {
     private Long roomId;
 
 //    Will uncomment later
-//    @ManyToOne
-//    @JoinColumn(name = "pg_id", nullable = false)
-//    private PayingGuestDetails payingGuestDetails;
+    @ManyToOne
+    @JoinColumn(name = "pg_id", nullable = false)
+    private PayingGuestDetails payingGuestDetails;
 
     @Column(name = "room_number", nullable = false)
     private String roomNumber;
