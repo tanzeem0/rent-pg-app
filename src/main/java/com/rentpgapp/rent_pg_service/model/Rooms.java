@@ -18,7 +18,6 @@ public class Rooms {
     @Column(name = "room_id")
     private Long roomId;
 
-//    Will uncomment later
     @ManyToOne
     @JoinColumn(name = "pg_id", nullable = false)
     private PayingGuestDetails payingGuestDetails;
@@ -35,4 +34,7 @@ public class Rooms {
 
     @Column(name = "is_available")
     private Boolean isAvailable;
+
+    @Column(name = "amenities")
+    private String amenities;
 }
