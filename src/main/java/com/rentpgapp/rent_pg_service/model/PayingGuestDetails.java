@@ -42,13 +42,4 @@ public class PayingGuestDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // PG can have many amenities
-    @ManyToMany
-    @JoinTable(
-            name = "pg_amenities",
-            joinColumns = @JoinColumn(name = "pg_id"),
-            inverseJoinColumns = @JoinColumn(name = "amenity_id")
-    )
-    private List<Amenity> amenities;
-
 }
