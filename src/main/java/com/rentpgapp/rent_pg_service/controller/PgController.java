@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/users/")
-public class UserController {
-    // contains http methods for users or owners
+@RequestMapping(path = "/api/pgs")
+public class PgController {
+    // contains https methods for Users
 }
