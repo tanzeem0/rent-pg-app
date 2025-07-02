@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PayingGuestDetails {
+public class PayingGuestDetailsDto {
     private Long pgId;
     private String name;
     private String location;
