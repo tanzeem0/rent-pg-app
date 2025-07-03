@@ -15,5 +15,5 @@ public class PayingGuestDetailsDto {
     private String city;
     private String address;
     private String description;
-    private Users owner;
+    private OwnerDto owner;
 }
