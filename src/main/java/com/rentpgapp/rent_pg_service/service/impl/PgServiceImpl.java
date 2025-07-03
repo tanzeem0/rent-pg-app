@@ -19,7 +19,9 @@ public class PgServiceImpl implements PgService {
 
     @Override
     public List<PayingGuestDetailsDto> getAllPgs(String city,String location,String address) {
+        System.out.println(city + " " + location);
         List<PayingGuestDetails> payingGuestDetailsEntityList = pgRepository.findByCityAndLocation(city,location);
+        System.out.println(payingGuestDetailsEntityList);
         List<PayingGuestDetailsDto> payingGuestDetailsDtos = payingGuestDetailsEntityList
                 .stream()
                 .map(everyPgDetail->modelMapper.map(everyPgDetail, PayingGuestDetailsDto.class))

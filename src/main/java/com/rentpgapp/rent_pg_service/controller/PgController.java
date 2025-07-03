@@ -18,11 +18,11 @@ public class PgController {
     // contains https methods for Users
     private final PgService pgService;
 
-    @GetMapping(name = "/users")
+    @GetMapping(path = "/users")
     public List<PayingGuestDetailsDto> getAllPgsUsers(@RequestParam String city,
                                                       @RequestParam String location,
                                                       @RequestParam(required = false) String address){
 
-        return pgService.getAllPgs(city,address,location);
+        return pgService.getAllPgs(city,location,address);
     }
 }
