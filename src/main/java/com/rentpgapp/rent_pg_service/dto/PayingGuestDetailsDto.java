@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,4 +18,5 @@ public class PayingGuestDetailsDto {
     private String address;
     private String description;
     private OwnerDto owner;
+    private List<RoomDto> rooms;
 }
