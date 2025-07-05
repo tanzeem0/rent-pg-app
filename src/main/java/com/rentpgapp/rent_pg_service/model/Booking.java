@@ -2,12 +2,11 @@ package com.rentpgapp.rent_pg_service.model;
 
 import com.rentpgapp.rent_pg_service.common.BookingStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

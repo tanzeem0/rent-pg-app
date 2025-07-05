@@ -1,12 +1,12 @@
 package com.rentpgapp.rent_pg_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rentpgapp.rent_pg_service.common.RoomType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,8 +18,9 @@ public class Rooms {
     @Column(name = "room_id")
     private Long roomId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pg_id", nullable = false)
+    @JsonIgnore
     private PayingGuestDetails payingGuestDetails;
 
     @Column(name = "room_number", nullable = false)
