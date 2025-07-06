@@ -9,5 +9,5 @@ public interface PgService {
 
     List<PayingGuestDetailsDto> getAllPgs(String city,String location,String address);
 
-    List<PayingGuestDetailsDto> getPgByNameAndLocation(String name, String location);
+    PayingGuestDetailsDto getPgByNameAndLocation(String name, String location);
 }

@@ -5,12 +5,14 @@ import com.rentpgapp.rent_pg_service.model.PayingGuestDetails;
 import com.rentpgapp.rent_pg_service.model.Rooms;
 import com.rentpgapp.rent_pg_service.repository.PgRepository;
 import com.rentpgapp.rent_pg_service.service.PgService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,17 +35,14 @@ public class PgServiceImpl implements PgService {
         return payingGuestDetailsDtos;
     }
 
-
     @Override
-    public List<PayingGuestDetailsDto> getPgByNameAndLocation(String name, String location) {
-        List<PayingGuestDetails> pgList = pgRepository.findByNameAndLocation(name, location);
-
-        pgList = pgList.stream()
-                .filter(pg -> pg.getRooms().stream().anyMatch(Rooms::getIsAvailable))
-                .toList();
-
-        return pgList.stream()
-                .map(pg -> modelMapper.map(pg, PayingGuestDetailsDto.class))
-                .toList();
+    public PayingGuestDetailsDto getPgByNameAndLocation(String name, String location) {
+        PayingGuestDetails pg = pgRepository.findByNameAndLocation(name, location)
+                .orElseThrow(() -> new EntityNotFoundException("PG not found"));
+        boolean hasAvailableRoom = pg.getRooms().stream().anyMatch(Rooms::getIsAvailable);
+        if (!hasAvailableRoom) {
+            throw new RuntimeException("No available rooms in this PG");
+        }
+        return modelMapper.map(pg, PayingGuestDetailsDto.class);
     }
 }

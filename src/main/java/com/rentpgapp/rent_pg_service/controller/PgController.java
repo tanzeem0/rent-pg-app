@@ -24,7 +24,7 @@ public class PgController {
     }
 
     @GetMapping("/users/{name}/{location}")
-    public List<PayingGuestDetailsDto> getPgByNameAndLocation(@PathVariable String name,
+    public PayingGuestDetailsDto getPgByNameAndLocation(@PathVariable String name,
                                                    @PathVariable String location) {
         return pgService.getPgByNameAndLocation(name, location);
     }
