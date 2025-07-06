@@ -32,4 +32,18 @@ public class PgServiceImpl implements PgService {
                 .toList();
         return payingGuestDetailsDtos;
     }
+
+
+    @Override
+    public List<PayingGuestDetailsDto> getPgByNameAndLocation(String name, String location) {
+        List<PayingGuestDetails> pgList = pgRepository.findByNameAndLocation(name, location);
+
+        pgList = pgList.stream()
+                .filter(pg -> pg.getRooms().stream().anyMatch(Rooms::getIsAvailable))
+                .toList();
+
+        return pgList.stream()
+                .map(pg -> modelMapper.map(pg, PayingGuestDetailsDto.class))
+                .toList();
+    }
 }

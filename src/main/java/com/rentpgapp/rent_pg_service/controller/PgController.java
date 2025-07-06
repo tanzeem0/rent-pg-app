@@ -4,10 +4,7 @@ import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsDto;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import com.rentpgapp.rent_pg_service.service.impl.PgServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,11 @@ public class PgController {
                                                       @RequestParam(required = false) String address){
 
         return pgService.getAllPgs(city,location,address);
+    }
+
+    @GetMapping("/users/{name}/{location}")
+    public List<PayingGuestDetailsDto> getPgByNameAndLocation(@PathVariable String name,
+                                                   @PathVariable String location) {
+        return pgService.getPgByNameAndLocation(name, location);
     }
 }

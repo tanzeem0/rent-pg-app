@@ -10,4 +10,6 @@ import java.util.List;
 public interface PgRepository extends JpaRepository<PayingGuestDetails,Long> {
 
     List<PayingGuestDetails> findByCityAndLocation(String city,String location);
+
+    List<PayingGuestDetails> findByNameAndLocation(String name, String location);
 }
