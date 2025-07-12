@@ -45,4 +45,11 @@ public class PgServiceImpl implements PgService {
         }
         return modelMapper.map(pg, PayingGuestDetailsDto.class);
     }
+
+    @Override
+    public void deletePgByNameAndLocation(String name, String location) {
+        PayingGuestDetails pg = pgRepository.findByNameAndLocation(name, location)
+                .orElseThrow(() -> new EntityNotFoundException("PG not found"));
+        pgRepository.delete(pg);
+    }
 }

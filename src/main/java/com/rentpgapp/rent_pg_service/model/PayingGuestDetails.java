@@ -44,6 +44,6 @@ public class PayingGuestDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "payingGuestDetails")
+    @OneToMany(mappedBy = "payingGuestDetails", cascade = CascadeType.ALL)
     private List<Rooms> rooms = new ArrayList<>();
 }

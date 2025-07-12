@@ -10,4 +10,6 @@ public interface PgService {
     List<PayingGuestDetailsDto> getAllPgs(String city,String location,String address);
 
     PayingGuestDetailsDto getPgByNameAndLocation(String name, String location);
+
+    void deletePgByNameAndLocation(String name, String location);
 }
