@@ -11,5 +11,5 @@ public interface PgService {
 
     PayingGuestDetailsDto getPgByNameAndLocation(String name, String location);
 
-    void deletePgByNameAndLocation(String name, String location);
+    boolean deletePgByNameAndLocation(String name, String location);
 }
