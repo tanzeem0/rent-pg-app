@@ -13,4 +13,6 @@ public interface PgRepository extends JpaRepository<PayingGuestDetails,Long> {
     List<PayingGuestDetails> findByCityAndLocation(String city,String location);
 
     Optional<PayingGuestDetails> findByNameAndLocation(String name, String location);
+
+    boolean deletePgByNameAndLocation(String name, String location);
 }

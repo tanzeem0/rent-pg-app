@@ -28,4 +28,10 @@ public class PgController {
                                                    @PathVariable String location) {
         return pgService.getPgByNameAndLocation(name, location);
     }
+
+    @DeleteMapping("/owners/{name}/{location}")
+    public boolean deletePgByNameAndLocation(@PathVariable String name, @PathVariable String location)
+    {
+        return pgService.deletePgByNameAndLocation(name,location);
+    }
 }
