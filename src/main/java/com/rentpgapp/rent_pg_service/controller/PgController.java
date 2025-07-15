@@ -1,6 +1,7 @@
 package com.rentpgapp.rent_pg_service.controller;
 
 import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsDto;
+import com.rentpgapp.rent_pg_service.dto.RoomDto;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import com.rentpgapp.rent_pg_service.service.impl.PgServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,18 @@ public class PgController {
     public boolean deletePgByNameAndLocation(@PathVariable String name, @PathVariable String location)
     {
         return pgService.deletePgByNameAndLocation(name,location);
+    }
+
+    @PostMapping("/{ownerId}")
+    public PayingGuestDetailsDto addPg(@PathVariable Long ownerId,
+                                       @RequestBody PayingGuestDetailsDto pgDto) {
+        return pgService.addPg(ownerId, pgDto);
+    }
+
+    @PostMapping("/owner/{ownerId}/{pgId}/room")
+    public PayingGuestDetailsDto addRoomToPg(@PathVariable Long ownerId,
+                                             @PathVariable Long pgId,
+                                             @RequestBody RoomDto roomDto) {
+        return pgService.addRoomToPg(ownerId, pgId, roomDto);
     }
 }

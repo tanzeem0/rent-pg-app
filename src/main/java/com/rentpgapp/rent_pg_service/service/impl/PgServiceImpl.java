@@ -1,8 +1,10 @@
 package com.rentpgapp.rent_pg_service.service.impl;
 
 import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsDto;
+import com.rentpgapp.rent_pg_service.dto.RoomDto;
 import com.rentpgapp.rent_pg_service.model.PayingGuestDetails;
 import com.rentpgapp.rent_pg_service.model.Rooms;
+import com.rentpgapp.rent_pg_service.model.Users;
 import com.rentpgapp.rent_pg_service.repository.PgRepository;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,5 +66,38 @@ public class PgServiceImpl implements PgService {
         } catch (Exception e) {
             return false; // deletion failed
         }
+    }
+
+    @Override
+    public PayingGuestDetailsDto addPg(Long ownerId, PayingGuestDetailsDto pgDto) {
+        Users owner = pgRepository.findById(ownerId)
+                .orElseThrow(() -> new EntityNotFoundException("Owner not found")).getOwner();
+        PayingGuestDetails pgEntity = modelMapper.map(pgDto, PayingGuestDetails.class);
+        pgEntity.setOwner(owner);
+        pgEntity.setCreatedAt(LocalDateTime.now());
+        if (pgEntity.getRooms() != null) {
+            for (Rooms room : pgEntity.getRooms()) {
+                room.setPayingGuestDetails(pgEntity);
+            }
+        }
+        PayingGuestDetails saved = pgRepository.save(pgEntity);
+        return modelMapper.map(saved, PayingGuestDetailsDto.class);
+    }
+
+    @Override
+    public PayingGuestDetailsDto addRoomToPg(Long ownerId, Long pgId, RoomDto roomDto) {
+        PayingGuestDetails pg = pgRepository.findById(pgId)
+                .orElseThrow(() -> new EntityNotFoundException("PG not found"));
+
+        if (!pg.getOwner().getUser_id().equals(ownerId)) {
+            throw new RuntimeException("You are not authorized to add rooms to this PG");
+        }
+
+        Rooms room = modelMapper.map(roomDto, Rooms.class);
+        room.setPayingGuestDetails(pg);
+        pg.getRooms().add(room);
+
+        PayingGuestDetails updatedPg = pgRepository.save(pg);
+        return modelMapper.map(updatedPg, PayingGuestDetailsDto.class);
     }
 }
