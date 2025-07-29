@@ -5,6 +5,7 @@ import com.rentpgapp.rent_pg_service.common.RoomType;
 import jakarta.persistence.*;
 import lombok.*;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor

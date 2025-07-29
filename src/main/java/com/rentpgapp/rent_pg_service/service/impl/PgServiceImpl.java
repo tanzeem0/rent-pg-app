@@ -1,22 +1,22 @@
 package com.rentpgapp.rent_pg_service.service.impl;
 
 import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsDto;
+import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsPostDto;
 import com.rentpgapp.rent_pg_service.dto.RoomDto;
+import com.rentpgapp.rent_pg_service.exceptions.PgNotFoundException;
+import com.rentpgapp.rent_pg_service.exceptions.UserNotFoundException;
 import com.rentpgapp.rent_pg_service.model.PayingGuestDetails;
 import com.rentpgapp.rent_pg_service.model.Rooms;
 import com.rentpgapp.rent_pg_service.model.Users;
 import com.rentpgapp.rent_pg_service.repository.PgRepository;
+import com.rentpgapp.rent_pg_service.repository.UserRepository;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class PgServiceImpl implements PgService {
 
     private final PgRepository pgRepository;
     private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     @Override
     public List<PayingGuestDetailsDto> getAllPgs(String city,String location,String address) {
@@ -41,7 +42,7 @@ public class PgServiceImpl implements PgService {
     @Override
     public PayingGuestDetailsDto getPgByNameAndLocation(String name, String location) {
         PayingGuestDetails pg = pgRepository.findByNameAndLocation(name, location)
-                .orElseThrow(() -> new EntityNotFoundException("PG not found"));
+                .orElseThrow(() -> new PgNotFoundException("PG not found with name: " + name + " location " + location ));
         boolean hasAvailableRoom = pg.getRooms().stream().anyMatch(Rooms::getIsAvailable);
         if (!hasAvailableRoom) {
             throw new RuntimeException("No available rooms in this PG");
@@ -60,21 +61,20 @@ public class PgServiceImpl implements PgService {
     public boolean deletePgByNameAndLocation(String name, String location) {
         try {
             PayingGuestDetails pg = pgRepository.findByNameAndLocation(name, location)
-                    .orElseThrow(() -> new EntityNotFoundException("PG not found"));
+                    .orElseThrow(() -> new PgNotFoundException("PG not found with name: " + name + " location " + location ));
             pgRepository.delete(pg);
             return true; // successfully deleted
         } catch (Exception e) {
-            return false; // deletion failed
+            throw new RuntimeException("Cannot delete PG with name " + name + " location " + location); // deletion failed
         }
     }
 
     @Override
-    public PayingGuestDetailsDto addPg(Long ownerId, PayingGuestDetailsDto pgDto) {
-        Users owner = pgRepository.findById(ownerId)
-                .orElseThrow(() -> new EntityNotFoundException("Owner not found")).getOwner();
+    public PayingGuestDetailsDto addPg(Long ownerId, PayingGuestDetailsPostDto pgDto) {
+        Users owner = userRepository.findById(ownerId)
+                .orElseThrow(() -> new UserNotFoundException("Owner not found with id: " + ownerId));
         PayingGuestDetails pgEntity = modelMapper.map(pgDto, PayingGuestDetails.class);
         pgEntity.setOwner(owner);
-        pgEntity.setCreatedAt(LocalDateTime.now());
         if (pgEntity.getRooms() != null) {
             for (Rooms room : pgEntity.getRooms()) {
                 room.setPayingGuestDetails(pgEntity);

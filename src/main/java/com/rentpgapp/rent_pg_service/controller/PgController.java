@@ -1,6 +1,7 @@
 package com.rentpgapp.rent_pg_service.controller;
 
 import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsDto;
+import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsPostDto;
 import com.rentpgapp.rent_pg_service.dto.RoomDto;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import com.rentpgapp.rent_pg_service.service.impl.PgServiceImpl;
@@ -38,7 +39,7 @@ public class PgController {
 
     @PostMapping("/{ownerId}")
     public PayingGuestDetailsDto addPg(@PathVariable Long ownerId,
-                                       @RequestBody PayingGuestDetailsDto pgDto) {
+                                       @RequestBody PayingGuestDetailsPostDto pgDto) {
         return pgService.addPg(ownerId, pgDto);
     }
 
