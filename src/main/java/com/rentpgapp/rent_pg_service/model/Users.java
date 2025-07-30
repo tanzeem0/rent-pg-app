@@ -3,6 +3,7 @@ package com.rentpgapp.rent_pg_service.model;
 import com.rentpgapp.rent_pg_service.common.Roles;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +35,7 @@ public class Users {
     @Column(name = "roles")
     private Roles roles;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
