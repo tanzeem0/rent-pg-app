@@ -28,9 +28,10 @@ public class PgController {
     }
 
     @GetMapping("/users/{name}/{location}")
-    public PayingGuestDetailsDto getPgByNameAndLocation(@PathVariable String name,
-                                                   @PathVariable String location) {
-        return ResponseEntity.ok(pgService.getPgByNameAndLocation(name, location)).getBody();
+    public ResponseEntity<PayingGuestDetailsDto> getPgByNameAndLocation(@PathVariable String name,
+                                                                        @PathVariable String location) {
+        PayingGuestDetailsDto pg = pgService.getPgByNameAndLocation(name, location);
+        return ResponseEntity.ok(pg);
     }
 
     @DeleteMapping("/owners/{name}/{location}")
@@ -40,17 +41,17 @@ public class PgController {
     }
 
     @PostMapping("/{ownerId}")
-    public PayingGuestDetailsDto addPg(@PathVariable Long ownerId,
-                                       @RequestBody PayingGuestDetailsPostDto pgDto) {
+    public ResponseEntity<PayingGuestDetailsDto> addPg(@PathVariable Long ownerId,
+                                                       @RequestBody PayingGuestDetailsPostDto pgDto) {
         PayingGuestDetailsDto created = pgService.addPg(ownerId, pgDto);
-        return new ResponseEntity<>(created, HttpStatus.CREATED).getBody();
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PostMapping("/owner/{ownerId}/{pgId}/room")
-    public PayingGuestDetailsDto addRoomToPg(@PathVariable Long ownerId,
-                                             @PathVariable Long pgId,
-                                             @RequestBody RoomDto roomDto) {
-        PayingGuestDetailsDto updated = pgService.addRoomToPg(ownerId, pgId, roomDto);
-        return new ResponseEntity<>(updated, HttpStatus.CREATED).getBody();
+    public ResponseEntity<PayingGuestDetailsDto> addRoomToPg(@PathVariable Long ownerId,
+                                                             @PathVariable Long pgId,
+                                                             @RequestBody RoomDto roomDto) {
+        PayingGuestDetailsDto updatedPg = pgService.addRoomToPg(ownerId, pgId, roomDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedPg);
     }
 }
