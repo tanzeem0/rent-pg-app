@@ -20,11 +20,11 @@ public class PgController {
     private final PgService pgService;
 
     @GetMapping(path = "/users")
-    public List<PayingGuestDetailsDto> getAllPgsUsers(@RequestParam String city,
+    public ResponseEntity<List<PayingGuestDetailsDto>> getAllPgsUsers(@RequestParam String city,
                                                       @RequestParam String location,
                                                       @RequestParam(required = false) String address){
 
-        return pgService.getAllPgs(city,location,address);
+        return ResponseEntity.ok(pgService.getAllPgs(city,location,address));
     }
 
     @GetMapping("/users/{name}/{location}")
