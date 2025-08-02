@@ -35,15 +35,13 @@ public class PgController {
         return ResponseEntity.ok(pg);
     }
 
-    @DeleteMapping("/owners/{ownerId}/{name}/{location}")
-    public ResponseEntity<String> deletePgByNameAndLocation(@PathVariable Long ownerId, @PathVariable String name, @PathVariable String location)
+    @DeleteMapping("/owners/{ownerId}")
+    public ResponseEntity<String> deletePgByNameAndLocation(@PathVariable Long ownerId,
+                                                            @RequestParam(value = "name") String name,
+                                                            @RequestParam(value = "location") String location)
     {
-        boolean deleted = pgService.deletePgByNameAndLocation(ownerId,name,location);
-        if(deleted)
-            return ResponseEntity.noContent().header("Successful deletion","PG with name " + name +
-                    " and location " + location + " was deleted successfully!!").build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("PG with name '" + name + "' at location: " + location + " not found for owner with id " + ownerId);
+        pgService.deletePgByNameAndLocation(ownerId, name, location);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{ownerId}")

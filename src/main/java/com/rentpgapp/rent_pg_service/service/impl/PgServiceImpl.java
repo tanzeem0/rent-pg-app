@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -60,14 +61,12 @@ public class PgServiceImpl implements PgService {
 
     @Override
     public boolean deletePgByNameAndLocation(Long ownerId, String name, String location) {
-        Users owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new UserNotFoundException("Owner with id " + ownerId + " not found!!"));
-        PayingGuestDetails pg = pgRepository.findByNameAndLocation(name, location)
-                .orElseThrow(() -> new PgNotFoundException("PG not found with name: " + name + " and location " + location + " for owner id " + ownerId));
-        if(!pg.getOwner().equals(owner))
-            return false;
+        if(Objects.nonNull(ownerId) && !userRepository.existsById(ownerId))
+            throw new UserNotFoundException("Owner with id " + ownerId + " not found!");
+        PayingGuestDetails pg = pgRepository.deletePgByNameLocationAndOwner(name,location,ownerId)
+                .orElseThrow(()->new PgNotFoundException("Pg not found for owner with id : " + ownerId + ", name : " + name + ", location : " + location));
         pgRepository.delete(pg);
-        return true; // successfully deleted
+        return true;
     }
 
     @Override
