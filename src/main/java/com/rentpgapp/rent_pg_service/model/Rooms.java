@@ -19,7 +19,7 @@ public class Rooms {
     @Column(name = "room_id")
     private Long roomId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "pg_id", nullable = false)
     @JsonIgnore
     private PayingGuestDetails payingGuestDetails;

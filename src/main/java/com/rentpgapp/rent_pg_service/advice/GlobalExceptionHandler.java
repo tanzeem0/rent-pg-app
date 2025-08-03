@@ -1,6 +1,7 @@
 package com.rentpgapp.rent_pg_service.advice;
 
 import com.rentpgapp.rent_pg_service.exceptions.PgNotFoundException;
+import com.rentpgapp.rent_pg_service.exceptions.RoomNotFoundException;
 import com.rentpgapp.rent_pg_service.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,14 @@ public class GlobalExceptionHandler {
         return ApiError.builder()
                 .message(e.getMessage())
                 .httpStatus(HttpStatus.FORBIDDEN)
+                .createdAt(LocalDateTime.now()).build();
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ApiError handleRoomNotFoundException(RoomNotFoundException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .httpStatus(HttpStatus.NOT_FOUND)
                 .createdAt(LocalDateTime.now()).build();
     }
 }
