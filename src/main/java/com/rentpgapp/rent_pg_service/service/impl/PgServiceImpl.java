@@ -66,7 +66,7 @@ public class PgServiceImpl implements PgService {
     public boolean deletePgByNameAndLocation(Long ownerId, String name, String location) {
         if(Objects.nonNull(ownerId) && !userRepository.existsById(ownerId))
             throw new UserNotFoundException("Owner with id " + ownerId + " not found!");
-        PayingGuestDetails pg = pgRepository.deletePgByNameLocationAndOwner(name,location,ownerId)
+        PayingGuestDetails pg = pgRepository.findPgByNameLocationAndOwner(name,location,ownerId)
                 .orElseThrow(()->new PgNotFoundException("Pg not found for owner with id : " + ownerId + ", name : " + name + ", location : " + location));
         pgRepository.delete(pg);
         return true;
@@ -76,7 +76,7 @@ public class PgServiceImpl implements PgService {
     public boolean deleteRoomByRoomNumber(Long ownerId, String name, String location, String roomNumber) {
         if(Objects.nonNull(ownerId) && !userRepository.existsById(ownerId))
             throw new UserNotFoundException("Owner with id " + ownerId + " not found!");
-        PayingGuestDetails pg = pgRepository.deletePgByNameLocationAndOwner(name,location,ownerId)
+        PayingGuestDetails pg = pgRepository.findPgByNameLocationAndOwner(name,location,ownerId)
                 .orElseThrow(()->new PgNotFoundException("Pg not found for owner with id : " + ownerId + ", name : " + name + ", location : " + location));
         Rooms room = roomRepository.findByPayingGuestDetailsAndRoomNumber(pg, roomNumber)
                 .orElseThrow(() -> new RoomNotFoundException("No room found with room number : " + roomNumber));
