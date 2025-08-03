@@ -16,10 +16,8 @@ public interface PgRepository extends JpaRepository<PayingGuestDetails,Long> {
 
     Optional<PayingGuestDetails> findByNameAndLocation(String name, String location);
 
-    boolean deletePgByNameAndLocation(String name, String location);
-
     @Query("SELECT pg FROM PayingGuestDetails pg WHERE pg.owner.id = :ownerId AND pg.name = :name AND pg.location = :location")
-    Optional<PayingGuestDetails> deletePgByNameLocationAndOwner(@Param("name") String name,
+    Optional<PayingGuestDetails> findPgByNameLocationAndOwner(@Param("name") String name,
                                                                 @Param("location") String location,
                                                                 @Param("ownerId") Long ownerId);
 }
