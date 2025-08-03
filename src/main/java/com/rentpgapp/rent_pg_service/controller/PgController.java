@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/api/pgs")
@@ -34,10 +35,13 @@ public class PgController {
         return ResponseEntity.ok(pg);
     }
 
-    @DeleteMapping("/owners/{name}/{location}")
-    public boolean deletePgByNameAndLocation(@PathVariable String name, @PathVariable String location)
+    @DeleteMapping("/owners/{ownerId}")
+    public ResponseEntity<String> deletePgByNameAndLocation(@PathVariable Long ownerId,
+                                                            @RequestParam(value = "name") String name,
+                                                            @RequestParam(value = "location") String location)
     {
-        return pgService.deletePgByNameAndLocation(name,location);
+        pgService.deletePgByNameAndLocation(ownerId, name, location);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{ownerId}")

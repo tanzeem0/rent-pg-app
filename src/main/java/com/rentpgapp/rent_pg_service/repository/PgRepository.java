@@ -2,6 +2,8 @@ package com.rentpgapp.rent_pg_service.repository;
 
 import com.rentpgapp.rent_pg_service.model.PayingGuestDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +17,9 @@ public interface PgRepository extends JpaRepository<PayingGuestDetails,Long> {
     Optional<PayingGuestDetails> findByNameAndLocation(String name, String location);
 
     boolean deletePgByNameAndLocation(String name, String location);
+
+    @Query("SELECT pg FROM PayingGuestDetails pg WHERE pg.owner.id = :ownerId AND pg.name = :name AND pg.location = :location")
+    Optional<PayingGuestDetails> deletePgByNameLocationAndOwner(@Param("name") String name,
+                                                                @Param("location") String location,
+                                                                @Param("ownerId") Long ownerId);
 }
