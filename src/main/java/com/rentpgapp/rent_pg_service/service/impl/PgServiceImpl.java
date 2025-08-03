@@ -14,6 +14,7 @@ import com.rentpgapp.rent_pg_service.repository.RoomRepository;
 import com.rentpgapp.rent_pg_service.repository.UserRepository;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -101,6 +102,7 @@ public class PgServiceImpl implements PgService {
     }
 
     @Override
+    @Transactional
     public PayingGuestDetailsDto addRoomToPg(Long ownerId, Long pgId, RoomDto roomDto) {
         PayingGuestDetails pg = pgRepository.findById(pgId)
                 .orElseThrow(() -> new EntityNotFoundException("PG not found"));
@@ -108,12 +110,9 @@ public class PgServiceImpl implements PgService {
         if (!pg.getOwner().getUser_id().equals(ownerId)) {
             throw new RuntimeException("You are not authorized to add rooms to this PG");
         }
-
         Rooms room = modelMapper.map(roomDto, Rooms.class);
         room.setPayingGuestDetails(pg);
         pg.getRooms().add(room);
-
-        PayingGuestDetails updatedPg = pgRepository.save(pg);
-        return modelMapper.map(updatedPg, PayingGuestDetailsDto.class);
+        return modelMapper.map(pg, PayingGuestDetailsDto.class);
     }
 }
