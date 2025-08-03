@@ -18,4 +18,6 @@ public interface PgService {
     PayingGuestDetailsDto addRoomToPg(Long ownerId, Long pgId, RoomDto roomDto);
 
     boolean deletePgByNameAndLocation(Long ownerId, String name, String location);
+
+    boolean deleteRoomByRoomNumber(Long ownerId, String name, String location, String roomNumber);
 }

@@ -44,6 +44,16 @@ public class PgController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/owners/{ownerId}/{roomNumber}")
+    public ResponseEntity<String> deleteRoom(@PathVariable Long ownerId,
+                                             @RequestParam(value = "name") String name,
+                                             @RequestParam(value = "location") String location,
+                                             @RequestParam(value = "roomNumber") String roomNumber)
+    {
+        pgService.deleteRoomByRoomNumber(ownerId, name, location, roomNumber);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{ownerId}")
     public ResponseEntity<PayingGuestDetailsDto> addPg(@PathVariable Long ownerId,
                                                        @RequestBody PayingGuestDetailsPostDto pgDto) {

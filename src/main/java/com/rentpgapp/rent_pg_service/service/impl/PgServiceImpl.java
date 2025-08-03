@@ -4,11 +4,13 @@ import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsDto;
 import com.rentpgapp.rent_pg_service.dto.PayingGuestDetailsPostDto;
 import com.rentpgapp.rent_pg_service.dto.RoomDto;
 import com.rentpgapp.rent_pg_service.exceptions.PgNotFoundException;
+import com.rentpgapp.rent_pg_service.exceptions.RoomNotFoundException;
 import com.rentpgapp.rent_pg_service.exceptions.UserNotFoundException;
 import com.rentpgapp.rent_pg_service.model.PayingGuestDetails;
 import com.rentpgapp.rent_pg_service.model.Rooms;
 import com.rentpgapp.rent_pg_service.model.Users;
 import com.rentpgapp.rent_pg_service.repository.PgRepository;
+import com.rentpgapp.rent_pg_service.repository.RoomRepository;
 import com.rentpgapp.rent_pg_service.repository.UserRepository;
 import com.rentpgapp.rent_pg_service.service.PgService;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,6 +29,7 @@ public class PgServiceImpl implements PgService {
     private final PgRepository pgRepository;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
     @Override
     public List<PayingGuestDetailsDto> getAllPgs(String city,String location,String address) {
@@ -68,6 +71,19 @@ public class PgServiceImpl implements PgService {
         pgRepository.delete(pg);
         return true;
     }
+
+    @Override
+    public boolean deleteRoomByRoomNumber(Long ownerId, String name, String location, String roomNumber) {
+        if(Objects.nonNull(ownerId) && !userRepository.existsById(ownerId))
+            throw new UserNotFoundException("Owner with id " + ownerId + " not found!");
+        PayingGuestDetails pg = pgRepository.deletePgByNameLocationAndOwner(name,location,ownerId)
+                .orElseThrow(()->new PgNotFoundException("Pg not found for owner with id : " + ownerId + ", name : " + name + ", location : " + location));
+        Rooms room = roomRepository.findByPayingGuestDetailsAndRoomNumber(pg, roomNumber)
+                .orElseThrow(() -> new RoomNotFoundException("No room found with room number : " + roomNumber));
+        roomRepository.delete(room);
+        return true;
+    }
+
 
     @Override
     public PayingGuestDetailsDto addPg(Long ownerId, PayingGuestDetailsPostDto pgDto) {
