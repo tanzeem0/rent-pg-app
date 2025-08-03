@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     public ApiError handleRuntimeException(RuntimeException e){
         return ApiError.builder()
                 .message(e.getMessage())
-                .httpStatus(HttpStatus.FORBIDDEN)
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .createdAt(LocalDateTime.now()).build();
     }
 

@@ -38,7 +38,7 @@ public class PayingGuestDetails {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Users owner;  // User with userType == OWNER
 
