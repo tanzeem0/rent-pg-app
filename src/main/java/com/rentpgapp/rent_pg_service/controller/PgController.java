@@ -44,7 +44,7 @@ public class PgController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/owners/{ownerId}")
+    @DeleteMapping("/owners/{ownerId}/rooms")
     public ResponseEntity<String> deleteRoom(@PathVariable Long ownerId,
                                              @RequestParam(value = "name") String name,
                                              @RequestParam(value = "location") String location,
